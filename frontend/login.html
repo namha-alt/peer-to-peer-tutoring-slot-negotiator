@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SlotSync - Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="nav-brand">SlotSync</h1>
+        <p id="auth-subtitle">Sign in to your account</p>
+      </div>
+
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email address</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required>
+          <span class="error-message" id="login-email-error"></span>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required>
+          <span class="error-message" id="login-password-error"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full mt-sm" id="login-btn">Sign In</button>
+      </form>
+
+      
+      <form id="signup-form" class="hidden">
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required>
+          <span class="error-message" id="signup-name-error"></span>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email address</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required>
+          <span class="error-message" id="signup-email-error"></span>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password (min 6 characters)</label>
+          <input type="password" id="signup-password" placeholder="••••••••" required>
+          <span class="error-message" id="signup-password-error"></span>
+        </div>
+        <div class="form-group">
+          <label for="signup-role">I am a...</label>
+          <select id="signup-role" required>
+            <option value="student">Student (Looking for help)</option>
+            <option value="tutor">Tutor (Offering help)</option>
+          </select>
+        </div>
+        
+        <div id="tutor-subject-group" class="form-group hidden">
+          <label for="signup-subject">Subject/Lecture</label>
+              <div class="checkbox-group mt-sm" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
+                <label><input type="checkbox" name="subject" value="Mathematics"> Mathematics</label>
+                <label><input type="checkbox" name="subject" value="Physics"> Physics</label>
+                <label><input type="checkbox" name="subject" value="Chemistry"> Chemistry</label>
+                <label><input type="checkbox" name="subject" value="Biology"> Biology</label>
+                <label><input type="checkbox" name="subject" value="Computer Science"> Computer Science</label>
+                <label><input type="checkbox" name="subject" value="English"> English</label>
+                <label><input type="checkbox" name="subject" value="Other" id="signup-subject-other-cb"> Other (Specify)</label>
+              </div>
+        </div>
+        
+        <div id="tutor-subject-other-group" class="form-group hidden">
+          <label for="signup-subject-other">Specify Subject</label>
+          <input type="text" id="signup-subject-other" placeholder="e.g. History">
+        </div>
+        
+        <div id="tutor-capacity-group" class="form-group hidden">
+          <label for="signup-capacity">Max Students per Slot</label>
+          <input type="number" id="signup-capacity" min="1" max="10" value="1" placeholder="1">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full mt-sm" id="signup-btn">Create Account</button>
+      </form>
+
+      <div class="auth-toggle">
+        <p id="toggle-text">Don't have an account? <a href="#" id="toggle-link">Sign up</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
