@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - SlotSync</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="#" class="nav-brand">SlotSync</a>
+      <div class="nav-user">
+        <span class="role-badge">Student</span>
+        <span id="user-name-display" style="font-weight: 500;"></span>
+        <button class="btn btn-outline" id="logout-btn" style="padding: 6px 12px; font-size: 0.85rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  
+  <main class="container">
+    <div class="dashboard-header mb-md" style="display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-md); flex-wrap: wrap;">
+      <div>
+        <h1 class="nav-brand">Student Dashboard</h1>
+        <p>Welcome back, <span id="student-name-profile">Student</span>!</p>
+      </div>
+      
+      
+      <div class="profile-card" style="background: var(--bg-color); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); display: flex; gap: var(--space-md); font-size: 0.9rem;">
+        <div>
+          <span style="color: var(--text-muted); display: block; font-size: 0.8rem; text-transform: uppercase;">Attendance</span>
+          <strong id="profile-attendance">--</strong>
+        </div>
+        <div>
+          <span style="color: var(--text-muted); display: block; font-size: 0.8rem; text-transform: uppercase;">Hours Learned</span>
+          <strong id="profile-hours">--</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-header">
+      <div>
+        <h1>Find a Tutor</h1>
+        <p class="mt-sm">Browse available slots across all tutors. Click a slot to book immediately.</p>
+      </div>
+      <div class="dashboard-stats">
+        <div class="stat-pill">
+          Weekly Requests: <strong id="stat-requests">0 / 3</strong>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="mb-lg">
+      <div class="browse-tutors-header">
+        <h2>Browse Tutors</h2>
+        <div style="display: flex; gap: var(--space-sm); align-items: center;">
+          <input type="text" id="tutor-search" placeholder="Search by subject..." style="max-width: 200px;">
+          <select id="tutor-filter" style="max-width: 200px;">
+            <option value="all">All Tutors</option>
+          </select>
+        </div>
+      </div>
+      <div id="tutor-cards-container" class="tutor-cards-container">
+        
+      </div>
+    </div>
+
+    
+    <div class="mb-md" style="display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="font-size: 1.5rem;">Select a Slot</h2>
+      <div style="display: flex; gap: var(--space-sm); align-items: center;">
+        <button class="btn btn-outline" id="prev-week-btn" style="padding: 4px 12px;">&lt; Prev</button>
+        <strong id="week-label" style="min-width: 140px; text-align: center;">This Week</strong>
+        <button class="btn btn-outline" id="next-week-btn" style="padding: 4px 12px;">Next &gt;</button>
+      </div>
+    </div>
+
+    
+    <div class="calendar-container">
+      
+      <div class="calendar-header" id="calendar-header">
+        <div class="calendar-day-header">Time</div>
+        
+      </div>
+      
+      
+      <div class="calendar-body" id="calendar-body">
+        
+        <div class="calendar-time-labels" id="time-labels">
+          
+        </div>
+        
+        
+      </div>
+    </div>
+
+    
+    <div class="mb-lg mt-lg">
+      <h2>My Bookings & Requests</h2>
+      <div id="my-bookings-container" class="mt-md">
+        
+      </div>
+    </div>
+  </main>
+
+  <!-- Booking Request Modal -->
+  <div id="booking-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title" style="margin: 0; font-size: 1.3rem;">Request Tutoring Slot</h3>
+        <button id="modal-close-btn" class="modal-close-btn" type="button">&times;</button>
+      </div>
+      <div style="background: var(--bg-color); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm); margin-bottom: var(--space-md); font-size: 0.95rem;">
+        <div><strong>Tutor:</strong> <span id="modal-tutor-name">--</span> (<span id="modal-tutor-subject">--</span>)</div>
+        <div style="margin-top: 4px;"><strong>Time:</strong> <span id="modal-slot-datetime">--</span></div>
+      </div>
+      <form id="booking-request-form">
+        <div class="form-group mb-md">
+          <label class="form-label" for="booking-topic" style="display: block; margin-bottom: 6px; font-weight: 500;">
+            Topic to Study <span style="color: var(--error-color);">*</span>
+          </label>
+          <input type="text" id="booking-topic" class="form-control" placeholder="e.g. Calculus: Derivatives, Binary Trees" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+        </div>
+        <div class="form-group mb-md">
+          <label class="form-label" for="booking-specifics" style="display: block; margin-bottom: 6px; font-weight: 500;">
+            Specific Questions or Notes (Optional)
+          </label>
+          <textarea id="booking-specifics" rows="3" placeholder="What specific problems or syllabus topics do you need help with?" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: var(--font-family); resize: vertical;"></textarea>
+        </div>
+        <div class="form-group mb-md">
+          <label class="form-label" for="booking-file" style="display: block; margin-bottom: 6px; font-weight: 500;">
+            Attach Reference PDF or Notes (Optional)
+          </label>
+          <input type="file" id="booking-file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" style="font-size: 0.9rem;">
+          <small style="display: block; color: var(--text-muted); margin-top: 4px;">Upload assignment sheet, syllabus PDF, or question image</small>
+        </div>
+        <div style="display: flex; gap: var(--space-sm); justify-content: flex-end; margin-top: var(--space-lg);">
+          <button type="button" id="modal-cancel-btn" class="btn btn-outline">Cancel</button>
+          <button type="submit" id="modal-submit-btn" class="btn btn-primary">Send Request to Tutor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/student.js"></script>
+</body>
+</html>
