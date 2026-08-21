@@ -489,4 +489,3 @@ document.addEventListener('DOMContentLoaded', () => {
   
   renderCalendar();
 });
-

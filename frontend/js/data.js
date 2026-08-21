@@ -311,5 +311,3 @@ const slotApi = {
     };
   }
 };
-
-
