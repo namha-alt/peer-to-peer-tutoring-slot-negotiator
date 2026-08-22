@@ -1,0 +1,3 @@
+[build]
+  # The directory to publish
+  publish = "vanilla-tutorslot-app"
