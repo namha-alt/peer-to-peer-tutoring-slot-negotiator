@@ -1,17 +1,14 @@
-/**
- * auth.js
- * Handles login and signup UI logic and validation
- */
+
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Check if already logged in
+  
   const session = userApi.getSession();
   if (session) {
     window.location.href = session.role === 'tutor' ? 'tutor.html' : 'student.html';
     return;
   }
 
-  // DOM Elements
+  
   const loginForm = document.getElementById('login-form');
   const signupForm = document.getElementById('signup-form');
   const toggleLink = document.getElementById('toggle-link');
@@ -29,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let isLogin = true;
 
-  // Toggle Forms
+  
   const handleToggle = (e) => {
     e.preventDefault();
     isLogin = !isLogin;
@@ -46,13 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
       toggleText.innerHTML = `Already have an account? <a href="#" id="toggle-link">Sign in</a>`;
     }
     
-    // Re-attach listener to new link
+    
     document.getElementById('toggle-link').addEventListener('click', handleToggle);
   };
 
   toggleLink.addEventListener('click', handleToggle);
 
-  // Handle Tutor Subject fields visibility
+  
   if (signupRole && tutorSubjectGroup && tutorSubjectOtherGroup) {
     signupRole.addEventListener('change', (e) => {
       if (e.target.value === 'tutor') {
@@ -76,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Validation helpers
+  
   const showError = (id, message) => {
     const errorEl = document.getElementById(`${id}-error`);
     if (errorEl) {
@@ -125,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
       userApi.setSession(user);
       toast.show('Login successful!');
       
-      // Redirect
+      
       setTimeout(() => {
         window.location.href = user.role === 'tutor' ? 'tutor.html' : 'student.html';
       }, 500);
@@ -135,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Signup Submit
+  
   signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
     clearErrors('signup-form');
@@ -177,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (role === 'tutor' && subjects.length === 0) {
-      showError('signup-name', 'Please select at least one subject'); // Displaying error near name or general
+      showError('signup-name', 'Please select at least one subject'); 
       isValid = false;
     }
     
@@ -188,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
       userApi.setSession(user);
       toast.show('Account created successfully!');
       
-      // Redirect
+      
       setTimeout(() => {
         window.location.href = user.role === 'tutor' ? 'tutor.html' : 'student.html';
       }, 500);

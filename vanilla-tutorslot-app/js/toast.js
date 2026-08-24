@@ -1,7 +1,4 @@
-/**
- * toast.js
- * Simple toast notification system
- */
+
 
 const toast = {
   show: (message, type = 'success') => {
@@ -14,7 +11,7 @@ const toast = {
     
     container.appendChild(toastEl);
     
-    // Auto remove after 3 seconds
+    
     setTimeout(() => {
       toastEl.style.animation = 'fadeOut 0.3s ease forwards';
       setTimeout(() => {

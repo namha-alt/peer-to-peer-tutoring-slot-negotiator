@@ -15,20 +15,6 @@ This phase focuses on a lightweight, lightning-fast client-side application usin
 
 ---
 
-## Screenshots
-
-> *Note: These are conceptual wireframes demonstrating the core user interfaces.*
-
-### Tutor Dashboard & Profile
-![Tutor Dashboard Mockup](/assets/screenshots/tutor_dashboard.png)
-*Tutors can configure their maximum student capacity per slot, toggle their availability on the weekly calendar, and track their ratings and hours taught.*
-
-### Student Booking Interface
-![Student Dashboard Mockup](/assets/screenshots/student_dashboard.png)
-*Students can browse available tutors, filter by subject, and instantly book slots that haven't reached maximum capacity.*
-
----
-
 ## How to Run Locally (New Computer)
 
 Because this app uses Vanilla JavaScript and `localStorage` as its database, you **do not** need a backend server, database server, or Node.js to run it! 

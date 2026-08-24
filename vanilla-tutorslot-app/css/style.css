@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Color Palette */
-  --bg-color: #F7F5F0; /* Warm off-white */
+  
+  --bg-color: #F7F5F0; 
   --surface-color: #FFFFFF;
-  --text-main: #2C362A; /* Deep forest green */
+  --text-main: #2C362A; 
   --text-muted: #6B7B69;
   --primary-color: #365042;
   --primary-hover: #293D32;
@@ -18,10 +18,10 @@
   --success-color: #4CAF50;
   --border-color: #E2DFD8;
 
-  /* Typography */
+  
   --font-family: 'Outfit', sans-serif;
   
-  /* Spacing */
+  
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
@@ -29,7 +29,7 @@
   --space-xl: 32px;
   --space-2xl: 48px;
 
-  /* Misc */
+  
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
@@ -55,7 +55,7 @@ body {
   flex-direction: column;
 }
 
-/* Utilities */
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -71,7 +71,7 @@ body {
 .mb-lg { margin-bottom: var(--space-lg); }
 .hidden { display: none !important; }
 
-/* Typography */
+
 h1, h2, h3, h4 {
   font-weight: 600;
   color: var(--text-main);
@@ -82,7 +82,7 @@ h1 { font-size: 2.5rem; letter-spacing: -0.02em; }
 h2 { font-size: 1.75rem; letter-spacing: -0.01em; }
 p { color: var(--text-muted); }
 
-/* Buttons */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -134,7 +134,7 @@ p { color: var(--text-muted); }
   width: 100%;
 }
 
-/* Forms */
+
 .form-group {
   margin-bottom: var(--space-md);
   text-align: left;
@@ -164,7 +164,7 @@ input[type="password"] {
 
 select {
   width: 100%;
-  padding: 12px 40px 12px 16px; /* Extra right padding for arrow */
+  padding: 12px 40px 12px 16px; 
   font-family: var(--font-family);
   font-size: 1rem;
   border: 1px solid var(--border-color);
@@ -173,7 +173,7 @@ select {
   color: var(--text-main);
   transition: var(--transition);
   
-  /* Custom Arrow */
+  
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -206,7 +206,7 @@ input:focus, select:focus {
   display: none;
 }
 
-/* Cards (Auth) */
+
 .auth-wrapper {
   display: flex;
   align-items: center;
@@ -250,7 +250,7 @@ input:focus, select:focus {
   text-decoration: underline;
 }
 
-/* Navbar */
+
 .navbar {
   background-color: var(--surface-color);
   border-bottom: 1px solid var(--border-color);
@@ -291,7 +291,7 @@ input:focus, select:focus {
   border: 1px solid var(--border-color);
 }
 
-/* Dashboard Layout */
+
 .dashboard-header {
   margin: var(--space-xl) 0;
   display: flex;
@@ -320,7 +320,7 @@ input:focus, select:focus {
   color: var(--primary-color);
 }
 
-/* Browse Tutors Section */
+
 .browse-tutors-header {
   display: flex;
   justify-content: space-between;
@@ -382,7 +382,7 @@ input:focus, select:focus {
   color: var(--primary-color);
 }
 
-/* Calendar Grid */
+
 .calendar-container {
   background-color: var(--surface-color);
   border: 1px solid var(--border-color);
@@ -418,7 +418,7 @@ input:focus, select:focus {
   overflow-y: auto;
 }
 
-/* Time labels column */
+
 .calendar-time-labels {
   display: flex;
   flex-direction: column;
@@ -435,7 +435,7 @@ input:focus, select:focus {
   border-bottom: 1px solid transparent;
 }
 
-/* Day columns */
+
 .calendar-day-col {
   display: flex;
   flex-direction: column;
@@ -460,7 +460,7 @@ input:focus, select:focus {
   background-color: rgba(54, 80, 66, 0.03);
 }
 
-/* Slot States */
+
 .slot-content {
   width: 100%;
   height: 100%;
@@ -474,14 +474,14 @@ input:focus, select:focus {
   font-weight: 500;
   opacity: 0;
   transition: opacity 0.2s;
-  pointer-events: none; /* Let clicks pass through to parent slot */
+  pointer-events: none; 
   padding: 2px;
   line-height: 1.1;
   word-wrap: break-word;
   overflow: hidden;
 }
 
-/* Tutor: marking as available */
+
 .calendar-slot.tutor-available {
   background-color: var(--accent-available);
 }
@@ -493,7 +493,7 @@ input:focus, select:focus {
   color: var(--primary-color);
 }
 
-/* Booked status (Student sees this as unavailable, Tutor sees as confirmed) */
+
 .calendar-slot.status-booked {
   background-color: var(--accent-booked);
   cursor: not-allowed;
@@ -504,7 +504,7 @@ input:focus, select:focus {
   background-color: var(--accent-booked-border);
 }
 
-/* Student: viewing available slots from tutors */
+
 .calendar-slot.student-bookable {
   background-color: var(--accent-available);
   border: 1px solid var(--accent-available-border);
@@ -520,7 +520,7 @@ input:focus, select:focus {
   color: var(--primary-color);
 }
 
-/* Student's own bookings */
+
 .calendar-slot.own-booking {
   background-color: var(--accent-own-booking);
   border: 1px solid var(--accent-own-booking-border);
@@ -531,7 +531,7 @@ input:focus, select:focus {
   color: var(--primary-color);
 }
 
-/* Empty State */
+
 .empty-state {
   padding: var(--space-2xl) var(--space-lg);
   text-align: center;
@@ -542,7 +542,7 @@ input:focus, select:focus {
   color: var(--text-main);
 }
 
-/* Toast Notifications */
+
 .toast-container {
   position: fixed;
   bottom: var(--space-lg);
@@ -583,10 +583,10 @@ input:focus, select:focus {
   to { opacity: 0; }
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .calendar-header {
-    display: none; /* Hide multi-day header on mobile */
+    display: none; 
   }
   
   .calendar-body {
@@ -595,13 +595,13 @@ input:focus, select:focus {
     flex-direction: column;
   }
   
-  /* On mobile, we stack days. We'll add JS logic to show one day at a time or stack them */
+  
   .calendar-day-col {
     margin-bottom: var(--space-lg);
     border-left: none;
   }
   
-  /* Add day header for mobile view */
+  
   .calendar-day-col::before {
     content: attr(data-day);
     display: block;
@@ -614,7 +614,7 @@ input:focus, select:focus {
   }
   
   .calendar-time-labels {
-    display: none; /* Hide time labels column, show inside slots if needed */
+    display: none; 
   }
   
   .dashboard-header {

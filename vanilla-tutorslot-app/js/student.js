@@ -1,20 +1,17 @@
-/**
- * student.js
- * Handles the Student Dashboard functionality (viewing slots, booking, displaying confirmed bookings)
- */
+
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Session check
+  
   const session = userApi.getSession();
   if (!session || session.role !== 'student') {
     window.location.href = 'index.html';
     return;
   }
 
-  // Set user info
+  
   document.getElementById('user-name-display').textContent = session.name;
   
-  // Profile Stats
+  
   const studentNameProfile = document.getElementById('student-name-profile');
   if (studentNameProfile) studentNameProfile.textContent = session.name;
   
@@ -25,13 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (profileAttendance) profileAttendance.textContent = stats.attendance;
   if (profileHours) profileHours.textContent = stats.hoursLearned;
 
-  // Logout
+  
   document.getElementById('logout-btn').addEventListener('click', () => {
     userApi.clearSession();
     window.location.href = 'index.html';
   });
 
-  // Calendar configuration
+  
   const START_HOUR = 8;
   const END_HOUR = 20;
   const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -42,16 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const statRequests = document.getElementById('stat-requests');
   const myBookingsContainer = document.getElementById('my-bookings-container');
   
-  // Browse elements
+  
   const tutorSearch = document.getElementById('tutor-search');
   const tutorFilter = document.getElementById('tutor-filter');
   const tutorCardsContainer = document.getElementById('tutor-cards-container');
 
-  // Local State
+  
   let availableSlots = [];
   let myBookings = [];
   let tutors = [];
-  let activeFilter = 'all'; // 'all' or tutorId
+  let activeFilter = 'all'; 
   let searchQuery = '';
   
   // Week Navigation State
@@ -85,10 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const format = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     document.getElementById('week-label').textContent = `${format(currentWeekDates[0])} - ${format(currentWeekDates[6])}`;
     
-    // Update headers
+    
     const headers = document.querySelectorAll('.calendar-day-header');
     DAYS.forEach((day, index) => {
-      // The first header is 'Time', so days start at index 1
+      
       if (headers[index + 1]) {
         headers[index + 1].textContent = `${day} (${format(currentWeekDates[index])})`;
       }
@@ -112,13 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
     myBookings = slotApi.getStudentBookings(session.id);
     tutors = userApi.getTutors();
     
-    // Update stats
+    
     statRequests.textContent = `${myBookings.length} / 3`;
     
     renderTutorCards();
     updateTutorDropdown();
-    // Do not call applySlotData here directly, let updateWeekUI handle it if it's initialized, 
-    // or if we just want to render bookings:
+    
+    
     if (currentWeekDates.length > 0) {
       applySlotData();
     }
@@ -131,9 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${h}:00 ${ampm}`;
   }
 
-  // Render Calendar Shell
+  
   function renderCalendar() {
-    // Render Day Headers (empty initially)
+    
     DAYS.forEach(day => {
       const headerEl = document.createElement('div');
       headerEl.className = 'calendar-day-header';
@@ -141,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
       calendarHeader.appendChild(headerEl);
     });
 
-    // Render Time Labels
+    
     for (let h = START_HOUR; h < END_HOUR; h++) {
       const labelEl = document.createElement('div');
       labelEl.className = 'time-label';
@@ -149,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
       timeLabels.appendChild(labelEl);
     }
 
-    // Render Day Columns and Slots
+    
     DAYS.forEach(day => {
       const colEl = document.createElement('div');
       colEl.className = 'calendar-day-col';
@@ -170,11 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       calendarBody.appendChild(colEl);
     });
-    updateDataAndUI(); // Initializes myBookings, availableSlots, etc.
-    updateWeekUI(); // Applies slots using currentWeekDates
+    updateDataAndUI(); 
+    updateWeekUI(); 
   }
   
-  // Browse Tutors Logic
+  
   function renderTutorCards() {
     tutorCardsContainer.innerHTML = '';
     
@@ -199,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       card.addEventListener('click', () => {
         if (activeFilter === tutor.id) {
-          activeFilter = 'all'; // toggle off
+          activeFilter = 'all'; 
         } else {
           activeFilter = tutor.id;
         }
@@ -213,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   function updateTutorDropdown() {
-    // Keep 'All Tutors' option
+    
     tutorFilter.innerHTML = '<option value="all">All Tutors</option>';
     tutors.forEach(tutor => {
       const option = document.createElement('option');
@@ -224,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     tutorFilter.value = activeFilter;
   }
   
-  // Event Listeners for Browse Controls
+  
   if (tutorSearch) {
     tutorSearch.addEventListener('input', (e) => {
       searchQuery = e.target.value;
@@ -240,9 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Apply available slots & own bookings to the UI
+  
   function applySlotData() {
-    // Reset all slots first
+    
     document.querySelectorAll('.calendar-slot').forEach(el => {
       el.className = 'calendar-slot';
       el.querySelector('.slot-content').textContent = '';
@@ -261,28 +258,28 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 2. Plot available slots
-    // Filter slots based on active tutor filter
+    
+    
     const slotsToDisplay = activeFilter === 'all' 
       ? availableSlots 
       : availableSlots.filter(s => s.tutorId === activeFilter);
       
     const allBookings = slotApi.getAllBookings();
       
-    // Handle case where multiple tutors might be available at the same time
+    
     slotsToDisplay.forEach(slot => {
       const dayIndex = DAYS.indexOf(slot.day);
       if (dayIndex === -1 || currentWeekDates.length === 0) return;
       const dateStr = getLocalDateStr(currentWeekDates[dayIndex]);
       
-      // Ignore if slot isn't for this specific date or has no date
+      
       if (slot.date && slot.date !== dateStr) return;
       
-      // Calculate capacity
+      
       const currentBookings = allBookings.filter(b => b.slotId === slot.id && b.date === dateStr);
       const maxCap = slot.tutorMaxCapacity || 1;
       
-      // If it's fully booked, skip
+      
       if (currentBookings.length >= maxCap) return;
       
       const slotEl = document.querySelector(`.calendar-slot[data-day="${slot.day}"][data-hour="${slot.startHour}"]`);
@@ -292,9 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
           displayLabel += ` (${currentBookings.length}/${maxCap})`;
         }
         
-        // If it already has an available slot from another tutor
+        
         if (slotEl.classList.contains('student-bookable')) {
-           // Append a "+1" indicator or similar if multiple (simplification for Phase 1)
+           
            if (!slotEl.querySelector('.slot-content').textContent.includes('&')) {
              slotEl.querySelector('.slot-content').textContent += ` & others`;
            }
@@ -302,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
           slotEl.classList.add('student-bookable');
           slotEl.querySelector('.slot-content').textContent = displayLabel;
           
-          // Click handler to book
+          
           slotEl.onclick = () => handleBookSlot(slot.id, dateStr);
         }
       }
@@ -321,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Render My Bookings List
+  
   function renderMyBookings() {
     myBookingsContainer.innerHTML = '';
     
@@ -336,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // Sort bookings by date and time
+    
     const sorted = [...myBookings].sort((a, b) => {
       if (a.date !== b.date) return a.date.localeCompare(b.date);
       return a.startHour - b.startHour;
@@ -353,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.justifyContent = 'space-between';
       card.style.alignItems = 'center';
       
-      const bookingDate = new Date(booking.date + 'T00:00:00'); // Force local time
+      const bookingDate = new Date(booking.date + 'T00:00:00'); 
       const dateLabel = bookingDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
       
       card.innerHTML = `
@@ -372,6 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize
+  
   renderCalendar();
 });

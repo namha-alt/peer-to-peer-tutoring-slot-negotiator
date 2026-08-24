@@ -1,20 +1,17 @@
-/**
- * tutor.js
- * Handles the Tutor Dashboard functionality (calendar rendering, toggling availability)
- */
+
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Session check
+  
   const session = userApi.getSession();
   if (!session || session.role !== 'tutor') {
     window.location.href = 'index.html';
     return;
   }
 
-  // Set user info
+  
   document.getElementById('user-name-display').textContent = session.name;
   
-  // Profile Stats
+  
   const tutorNameProfile = document.getElementById('tutor-name-profile');
   if (tutorNameProfile) tutorNameProfile.textContent = session.name;
   
@@ -26,20 +23,20 @@ document.addEventListener('DOMContentLoaded', () => {
   if (profileRating) profileRating.textContent = stats.rating;
   if (profileHours) profileHours.textContent = stats.hoursTaught;
   
-  // Get tutor subjects
+  
   const tutors = userApi.getTutors();
   const myTutorData = tutors.find(t => t.id === session.id);
   if (profileSubjects && myTutorData) {
     profileSubjects.textContent = myTutorData.subjects;
   }
 
-  // Logout
+  
   document.getElementById('logout-btn').addEventListener('click', () => {
     userApi.clearSession();
     window.location.href = 'index.html';
   });
 
-  // Settings Init
+  
   const capacityInput = document.getElementById('tutor-capacity-setting');
   if (capacityInput) {
     const tutors = userApi.getTutors();
@@ -49,22 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
     capacityInput.addEventListener('change', (e) => {
       const newVal = parseInt(e.target.value, 10);
       if (newVal >= 1) {
-        // Update user data in DB
+        
         const data = db.get();
         const userIndex = data.users.findIndex(u => u.id === session.id);
         if (userIndex >= 0) {
           data.users[userIndex].maxCapacity = newVal;
           db.save(data);
           toast.show('Capacity updated successfully', 'success');
-          applySlotData(); // refresh to show changes
+          applySlotData(); 
         }
       }
     });
   }
 
-  // Calendar configuration
-  const START_HOUR = 8; // 8 AM
-  const END_HOUR = 20;  // 8 PM
+  
+  const START_HOUR = 8; 
+  const END_HOUR = 20;  
   const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const calendarHeader = document.getElementById('calendar-header');
@@ -73,14 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const statAvailable = document.getElementById('stat-available');
   const statBooked = document.getElementById('stat-booked');
 
-  // Load data
+  
   let mySlots = slotApi.getSlotSyncs(session.id);
   
-  // Week Navigation State
+  
   let weekOffset = 0;
   let currentWeekDates = [];
 
-  // Date Helper
+  
   function getLocalDateStr(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -90,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getWeekDates(offset) {
     const today = new Date();
-    // Normalize to Monday
+    
     const day = today.getDay() || 7;
     today.setDate(today.getDate() - day + 1 + (offset * 7));
     
@@ -108,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const format = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     document.getElementById('week-label').textContent = `${format(currentWeekDates[0])} - ${format(currentWeekDates[6])}`;
     
-    // Update headers
+    
     const headers = document.querySelectorAll('.calendar-day-header');
     DAYS.forEach((day, index) => {
       if (headers[index]) {
@@ -130,23 +127,23 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   function updateStats() {
-    // Stats apply to the current view only? Or total?
-    // Let's do total for simplicity, as per previous implementation
+    
+    
     let availableCount = 0;
     let bookedCount = 0;
     
     const allBookings = slotApi.getAllBookings().filter(b => b.tutorId === session.id);
     
     mySlots.forEach(slot => {
-      // Find exact date for this slot's day in current week
+      
       const dayIndex = DAYS.indexOf(slot.day);
       if (dayIndex === -1 || currentWeekDates.length === 0) return;
       const dateStr = getLocalDateStr(currentWeekDates[dayIndex]);
       
-      // If the slot isn't for this date, ignore it
+      
       if (slot.date && slot.date !== dateStr) return;
       
-      // Check bookings
+      
       const bookingsForSlot = allBookings.filter(b => b.slotId === slot.id && b.date === dateStr);
       
       const tutors = userApi.getTutors();
@@ -161,16 +158,16 @@ document.addEventListener('DOMContentLoaded', () => {
     statBooked.textContent = bookedCount;
   }
 
-  // Format hour (e.g. 9 -> "9:00 AM")
+  
   function formatHour(hour) {
     const ampm = hour >= 12 ? 'PM' : 'AM';
     const h = hour % 12 || 12;
     return `${h}:00 ${ampm}`;
   }
 
-  // Render Calendar Shell
+  
   function renderCalendar() {
-    // Render Day Headers (empty initially, filled by updateWeekUI)
+    
     DAYS.forEach(day => {
       const headerEl = document.createElement('div');
       headerEl.className = 'calendar-day-header';
@@ -178,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
       calendarHeader.appendChild(headerEl);
     });
 
-    // Render Time Labels
+    
     for (let h = START_HOUR; h < END_HOUR; h++) {
       const labelEl = document.createElement('div');
       labelEl.className = 'time-label';
@@ -186,11 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
       timeLabels.appendChild(labelEl);
     }
 
-    // Render Day Columns and Slots
+    
     DAYS.forEach(day => {
       const colEl = document.createElement('div');
       colEl.className = 'calendar-day-col';
-      colEl.dataset.day = day; // For mobile CSS pseudo-element
+      colEl.dataset.day = day; 
 
       for (let h = START_HOUR; h < END_HOUR; h++) {
         const slotEl = document.createElement('div');
@@ -198,12 +195,12 @@ document.addEventListener('DOMContentLoaded', () => {
         slotEl.dataset.day = day;
         slotEl.dataset.hour = h;
         
-        // Inner content for state display (e.g., checkmark or "Booked")
+        
         const contentEl = document.createElement('div');
         contentEl.className = 'slot-content';
         slotEl.appendChild(contentEl);
         
-        // Click handler for toggling
+        
         slotEl.addEventListener('click', () => handleSlotClick(day, h));
         
         colEl.appendChild(slotEl);
@@ -212,14 +209,14 @@ document.addEventListener('DOMContentLoaded', () => {
       calendarBody.appendChild(colEl);
     });
     
-    // Apply data to grid via week UI
+    
     updateWeekUI();
     renderMyBookings();
   }
 
-  // Apply existing slots to the UI
+  
   function applySlotData() {
-    // Reset all slots first
+    
     document.querySelectorAll('.calendar-slot').forEach(el => {
       el.className = 'calendar-slot';
       el.querySelector('.slot-content').textContent = '';
@@ -240,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dayIndex === -1 || currentWeekDates.length === 0) return;
         const dateStr = getLocalDateStr(currentWeekDates[dayIndex]);
         
-        // Ensure this slot is for the current week's date
+        
         if (slot.date && slot.date !== dateStr) return;
         
         const bookingsForSlot = allBookings.filter(b => b.slotId === slot.id && b.date === dateStr);
@@ -248,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (bookingsForSlot.length >= maxCap) {
           slotEl.classList.add('status-booked');
-          // If multiple, show "Full (N booked)"
+          
           if (bookingsForSlot.length === 1) {
             const data = db.get();
             const student = data.users.find(u => u.id === bookingsForSlot[0].studentId);
@@ -269,17 +266,17 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStats();
   }
 
-  // Handle slot click
+  
   function handleSlotClick(day, hour) {
     const dayIndex = DAYS.indexOf(day);
     if (dayIndex === -1 || currentWeekDates.length === 0) return;
     const dateStr = getLocalDateStr(currentWeekDates[dayIndex]);
 
-    // Check if it exists for this specific date
+    
     const existingSlot = mySlots.find(s => s.date === dateStr && s.startHour === hour);
     
     if (existingSlot) {
-      // Check if it has any bookings.
+      
       const hasBookings = slotApi.getAllBookings().some(b => b.slotId === existingSlot.id);
       if (hasBookings) {
         toast.show('Cannot remove a slot that has existing bookings.', 'error');
@@ -288,10 +285,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      // Toggle in storage (using dateStr instead of day)
+      
       slotApi.toggleAvailability(session.id, dateStr, hour);
       
-      // Refresh local data & UI
+      
       mySlots = slotApi.getSlotSyncs(session.id);
       applySlotData();
       
@@ -300,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Render My Bookings List
+  
   function renderMyBookings() {
     const myBookingsContainer = document.getElementById('my-bookings-container');
     if (!myBookingsContainer) return;
@@ -320,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // Sort bookings by date and time
+    
     const sorted = [...tutorBookings].sort((a, b) => {
       if (a.date !== b.date) return a.date.localeCompare(b.date);
       return a.startHour - b.startHour;
@@ -337,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.justifyContent = 'space-between';
       card.style.alignItems = 'center';
       
-      const bookingDate = new Date(booking.date + 'T00:00:00'); // Force local time
+      const bookingDate = new Date(booking.date + 'T00:00:00'); 
       const dateLabel = bookingDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
       
       card.innerHTML = `
@@ -356,6 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize
+  
   renderCalendar();
 });
