@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const session = userApi.getSession();
   if (!session || session.role !== 'student') {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
     return;
   }
 
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.getElementById('logout-btn').addEventListener('click', () => {
     userApi.clearSession();
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
   });
 
   

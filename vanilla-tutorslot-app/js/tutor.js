@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const session = userApi.getSession();
   if (!session || session.role !== 'tutor') {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
     return;
   }
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.getElementById('logout-btn').addEventListener('click', () => {
     userApi.clearSession();
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
   });
 
   
@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const headers = document.querySelectorAll('.calendar-day-header');
     DAYS.forEach((day, index) => {
-      if (headers[index]) {
-        headers[index].textContent = `${day} (${format(currentWeekDates[index])})`;
+      if (headers[index + 1]) {
+        headers[index + 1].textContent = `${day} (${format(currentWeekDates[index])})`;
       }
     });
     

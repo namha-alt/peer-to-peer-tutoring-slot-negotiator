@@ -3,93 +3,201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SlotSync - Login</title>
+  <title>SlotSync - Peer Tutoring Made Simple</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--bg-color) 0%, var(--accent-available) 100%);
+      text-align: center;
+      padding: var(--space-xl);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .hero-blob {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: var(--accent-own-booking);
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      opacity: 0.6;
+      animation: float 10s ease-in-out infinite alternate;
+    }
+    
+    .hero-blob-2 {
+      width: 400px;
+      height: 400px;
+      background: var(--accent-booked);
+      right: -100px;
+      top: -100px;
+      animation: float 8s ease-in-out infinite alternate-reverse;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(30px) scale(1.1); }
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.4);
+      padding: var(--space-xl);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUpFade 0.8s ease-out forwards;
+    }
+    
+    @keyframes slideUpFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero-title {
+      font-size: 3.5rem;
+      color: var(--primary-color);
+      margin-bottom: var(--space-md);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xl);
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .hero-cta {
+      display: flex;
+      gap: var(--space-md);
+      justify-content: center;
+    }
+    
+    .btn-large {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      border-radius: var(--radius-md);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .btn-large:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(54, 80, 66, 0.15);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--primary-color);
+      color: var(--surface-color);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+      text-align: left;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.6);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .feature-title {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: var(--space-xs);
+      font-size: 1.1rem;
+    }
+    
+    .nav-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    .brand-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+  </style>
 </head>
 <body>
+  
+  <nav class="nav-top">
+    <div class="brand-logo">SlotSync</div>
+    <div>
+      <a href="login.html" class="btn btn-secondary" style="margin-right: 10px; border: none;">Sign In</a>
+      <a href="login.html" class="btn btn-primary">Get Started</a>
+    </div>
+  </nav>
 
-  <div class="auth-wrapper">
-    <div class="auth-card">
-      <div class="auth-header">
-        <h1 class="nav-brand">SlotSync</h1>
-        <p id="auth-subtitle">Sign in to your account</p>
+  <section class="hero-section">
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-blob" style="bottom: -100px; left: -100px;"></div>
+    
+    <div class="hero-content">
+      <h1 class="hero-title">Sync Your Success.</h1>
+      <p class="hero-subtitle">The seamless peer-to-peer tutoring negotiator. Connect with knowledgeable students, book dedicated time slots, and learn together without the friction.</p>
+      
+      <div class="hero-cta">
+        <a href="login.html" class="btn btn-primary btn-large">Start Booking Slots</a>
+        <a href="#features" class="btn btn-secondary btn-large">Learn More</a>
       </div>
-
       
-      <form id="login-form">
-        <div class="form-group">
-          <label for="login-email">Email address</label>
-          <input type="email" id="login-email" placeholder="you@example.com" required>
-          <span class="error-message" id="login-email-error"></span>
+      <div id="features" class="features-grid">
+        <div class="feature-card">
+          <div class="feature-title">Smart Overlap Engine</div>
+          <div style="color: var(--text-muted); font-size: 0.95rem;">Never double-book again. SlotSync automatically prevents scheduling conflicts for both tutors and students.</div>
         </div>
-        <div class="form-group">
-          <label for="login-password">Password</label>
-          <input type="password" id="login-password" placeholder="••••••••" required>
-          <span class="error-message" id="login-password-error"></span>
+        <div class="feature-card">
+          <div class="feature-title">Dynamic Group Capacity</div>
+          <div style="color: var(--text-muted); font-size: 0.95rem;">Tutors can teach 1-on-1 or open up slots for group study sessions by dynamically adjusting capacity.</div>
         </div>
-        <button type="submit" class="btn btn-primary btn-full mt-sm" id="login-btn">Sign In</button>
-      </form>
-
-      
-      <form id="signup-form" class="hidden">
-        <div class="form-group">
-          <label for="signup-name">Full Name</label>
-          <input type="text" id="signup-name" placeholder="John Doe" required>
-          <span class="error-message" id="signup-name-error"></span>
+        <div class="feature-card">
+          <div class="feature-title">Instant Resolution</div>
+          <div style="color: var(--text-muted); font-size: 0.95rem;">Lightning fast local-first architecture. Bookings resolve instantly with real-time UI updates.</div>
         </div>
-        <div class="form-group">
-          <label for="signup-email">Email address</label>
-          <input type="email" id="signup-email" placeholder="you@example.com" required>
-          <span class="error-message" id="signup-email-error"></span>
-        </div>
-        <div class="form-group">
-          <label for="signup-password">Password (min 6 characters)</label>
-          <input type="password" id="signup-password" placeholder="••••••••" required>
-          <span class="error-message" id="signup-password-error"></span>
-        </div>
-        <div class="form-group">
-          <label for="signup-role">I am a...</label>
-          <select id="signup-role" required>
-            <option value="student">Student (Looking for help)</option>
-            <option value="tutor">Tutor (Offering help)</option>
-          </select>
-        </div>
-        
-        <div id="tutor-subject-group" class="form-group hidden">
-          <label for="signup-subject">Subject/Lecture</label>
-              <div class="checkbox-group mt-sm" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
-                <label><input type="checkbox" name="subject" value="Mathematics"> Mathematics</label>
-                <label><input type="checkbox" name="subject" value="Physics"> Physics</label>
-                <label><input type="checkbox" name="subject" value="Chemistry"> Chemistry</label>
-                <label><input type="checkbox" name="subject" value="Biology"> Biology</label>
-                <label><input type="checkbox" name="subject" value="Computer Science"> Computer Science</label>
-                <label><input type="checkbox" name="subject" value="English"> English</label>
-                <label><input type="checkbox" name="subject" value="Other" id="signup-subject-other-cb"> Other (Specify)</label>
-              </div>
-        </div>
-        
-        <div id="tutor-subject-other-group" class="form-group hidden">
-          <label for="signup-subject-other">Specify Subject</label>
-          <input type="text" id="signup-subject-other" placeholder="e.g. History">
-        </div>
-        
-        <div id="tutor-capacity-group" class="form-group hidden">
-          <label for="signup-capacity">Max Students per Slot</label>
-          <input type="number" id="signup-capacity" min="1" max="10" value="1" placeholder="1">
-        </div>
-        <button type="submit" class="btn btn-primary btn-full mt-sm" id="signup-btn">Create Account</button>
-      </form>
-
-      <div class="auth-toggle">
-        <p id="toggle-text">Don't have an account? <a href="#" id="toggle-link">Sign up</a></p>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div id="toast-container" class="toast-container"></div>
-
-  <script src="js/data.js"></script>
-  <script src="js/toast.js"></script>
-  <script src="js/auth.js"></script>
 </body>
 </html>
