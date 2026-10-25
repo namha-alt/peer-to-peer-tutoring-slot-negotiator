@@ -19,8 +19,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve Frontend Static Files (Fixes "Cannot GET /" in browser)
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
+// Serve Frontend Static Files (with .html extension support)
+app.use(express.static(path.join(__dirname, '..', 'frontend'), { extensions: ['html'] }));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -28,6 +28,12 @@ app.use('/api/slots', slotRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/users', userRoutes);
 app.get('/api/system/health', getHealth);
+
+// Frontend fallback for client-side navigation
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+});
 
 // Centralized Error Handler
 app.use(errorHandler);
