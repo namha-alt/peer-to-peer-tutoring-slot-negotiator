@@ -4,7 +4,7 @@
 [![Express.js](https://img.shields.io/badge/Express.js-4.x-black?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose%208-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Render](https://img.shields.io/badge/Render-Deployment-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/)
+[![Live Deployment](https://img.shields.io/badge/Live_Demo-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://slot-sync-a9dy.onrender.com)
 [![Postman](https://img.shields.io/badge/Postman-REST%20API-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/)
 
 An educational full-stack scheduling and slot-negotiation platform connecting peer tutors and students. The application eliminates scheduling friction, prevents double-booking, enforces fairness limits, allows students to attach study topics and reference materials, and provides tutors full approval control over incoming requests.
@@ -119,7 +119,7 @@ peer-to-peer-tutoring-slot-negotiator/
 
 ## REST API Reference
 
-Base URL: `http://localhost:5000` (Local) or your Render deployment URL.
+Base URL: `http://localhost:5000` (Local) or `https://slot-sync-a9dy.onrender.com` (Live Production).
 
 ### 1. System Health
 | Method | Endpoint | Access | Description |
