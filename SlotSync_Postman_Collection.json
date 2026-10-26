@@ -1,0 +1,359 @@
+{
+  "info": {
+    "_postman_id": "slotsync-api-collection-2026",
+    "name": "SlotSync REST API Tests",
+    "description": "Comprehensive Postman test collection for SlotSync (Peer-to-Peer Tutoring Slot Negotiator). Covers Health Check, Authentication, Slot Management, Booking Negotiations, and User/Tutor discovery.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://slot-sync-a9dy.onrender.com",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. System Health",
+      "item": [
+        {
+          "name": "Check Server Health & DB State",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/system/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "system", "health"]
+            },
+            "description": "Returns server status (ONLINE), uptime, and live MongoDB Atlas connection status."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Authentication",
+      "item": [
+        {
+          "name": "Register Tutor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Alan Turing\",\n  \"email\": \"turing@slotsync.edu\",\n  \"password\": \"password123\",\n  \"role\": \"tutor\",\n  \"subjects\": [\"Algorithms\", \"Discrete Mathematics\"],\n  \"maxCapacity\": 3\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Registers a new Tutor and returns a JWT Bearer token."
+          },
+          "response": []
+        },
+        {
+          "name": "Register Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sukh Bansal\",\n  \"email\": \"sukh@slotsync.edu\",\n  \"password\": \"password123\",\n  \"role\": \"student\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Registers a new Student."
+          },
+          "response": []
+        },
+        {
+          "name": "Login (Sets JWT Token Automatically)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.token) {",
+                  "        pm.collectionVariables.set('jwt_token', json.token);",
+                  "        console.log('JWT Token stored successfully:', json.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"turing@slotsync.edu\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Logs in the user and automatically stores the JWT token in the collection variable {{jwt_token}} for subsequent protected requests."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User Profile (/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "me"]
+            },
+            "description": "Protected route that verifies JWT Bearer token and returns authenticated user details."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Slots Management",
+      "item": [
+        {
+          "name": "Get All Available Slots (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/slots/available",
+              "host": ["{{base_url}}"],
+              "path": ["api", "slots", "available"]
+            },
+            "description": "Fetches all active availability slots across all tutors for students to browse on the calendar."
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Slot Availability (Tutor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-11-02\",\n  \"startHour\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/slots/toggle",
+              "host": ["{{base_url}}"],
+              "path": ["api", "slots", "toggle"]
+            },
+            "description": "Creates or removes a tutoring slot for a specific date and hour (must be today or future date)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Slots (Tutor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/slots/my",
+              "host": ["{{base_url}}"],
+              "path": ["api", "slots", "my"]
+            },
+            "description": "Retrieves slots created by the logged-in tutor along with active student booking requests."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Bookings & Negotiation",
+      "item": [
+        {
+          "name": "Request Slot Booking (Student)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slotId\": \"PASTE_SLOT_ID_HERE\",\n  \"date\": \"2026-11-02\",\n  \"topic\": \"Binary Search Trees\",\n  \"specifics\": \"Need help with AVL balancing rotations\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bookings",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings"]
+            },
+            "description": "Student requests a slot. Validates date, prevents duplicates, and checks fairness quotas."
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bookings/my",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings", "my"]
+            },
+            "description": "Returns bookings assigned to or requested by the authenticated student or tutor."
+          },
+          "response": []
+        },
+        {
+          "name": "Tutor Approve / Decline Booking",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bookings/PASTE_BOOKING_ID_HERE/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings", "PASTE_BOOKING_ID_HERE", "status"]
+            },
+            "description": "Tutor accepts ('confirmed') or rejects ('rejected') an incoming student request."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Users & Tutors",
+      "item": [
+        {
+          "name": "Get Tutors List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/tutors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "tutors"]
+            },
+            "description": "Public list of all tutors with subjects, rating, and open slot counts."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Tutor Capacity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maxCapacity\": 4\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/tutor/capacity",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "tutor", "capacity"]
+            },
+            "description": "Tutors can update their maximum students per slot capacity (1-10)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "stats"]
+            },
+            "description": "Returns session statistics (hours learned/taught, attendance, ratings)."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
